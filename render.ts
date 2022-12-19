@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 import * as fs from 'fs'
 import * as sb from 'structure-bytes'
-import {Cage, Op, Puzzle, puzzleType, solutionType} from './types'
+import { Cage, Op, Puzzle, puzzleType, solutionType } from './types'
 
 const PUZZLE_FILE = 'puzzle.html'
 //Symbols to display instead of op strings
@@ -10,7 +10,7 @@ const DISPLAY_OPS = new Map<Op, string>()
 	.set('*', '×')
 	.set('/', '÷')
 
-const {argv} = process
+const { argv } = process
 if (argv.length !== 3) throw new Error('Usage: ./render.js path/to/cagings.sbv')
 
 const readPuzzle = new Promise<Puzzle>((resolve, reject) => {
@@ -70,11 +70,11 @@ const cellInputStyling = `
 
 Promise.all([readPuzzle, readSolutions])
 	.then(([puzzle, solution]) => {
-		const {max, cages} = puzzle!
+		const { max, cages } = puzzle!
 		const boxCage = new Map<string, Cage>() //map of '1 2' to cage
 		const boxOps = new Map<string, string>() //map of '1 2' to cage operation to display
 		for (const cage of cages) {
-			const {op, val, boxes} = cage
+			const { op, val, boxes } = cage
 			let topLeftBox: [number, number] = [Infinity, Infinity]
 			for (const [r, c] of boxes) {
 				boxCage.set([r, c].join(' '), cage)
@@ -124,7 +124,7 @@ Promise.all([readPuzzle, readSolutions])
 				out.push('>')
 				const op = boxOps.get(boxId)
 				if (op) out.push('<span class=op>', op, '</span>')
-				out.push('<span class="solution-span">', String(solution[r * max + c]), '</span>')
+				out.push(`<span id=${"solution-overlay-" + r + "-" + c} class="solution-span">`, String(solution[r * max + c]), '</span>')
 				out.push(`<span id=${"input-overlay-" + r + "-" + c} class="input-overlay"></span>`)
 				out.push('</td>')
 			}
@@ -141,4 +141,4 @@ Promise.all([readPuzzle, readSolutions])
 			if (err) throw err
 		})
 	})
-	.catch(console.error)
+.catch(console.error)

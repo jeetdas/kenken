@@ -1,4 +1,5 @@
 let focusedCellId: string | null = null;
+let validateCurrentGame: boolean = false;
 
 function cellClick(event: Event) {
     const target = event.target as Element;
@@ -45,9 +46,32 @@ function showSolution(event: Event) {
 }
 
 function validateInput(event: Event) {
-    // WIP
+    let correctCount = 0;
+    let incorrectCount = 0;
     const tar = event.target as HTMLInputElement;
+    validateCurrentGame = tar.checked;
     console.log('Validate: ' + tar.checked);
+    if (validateCurrentGame) {
+        let inputCells = document.querySelectorAll('[id^="input-overlay-"]');
+        inputCells.forEach(inputCell => {
+            const splitName = inputCell.id.split('-'); 
+            let [row, col] = [splitName[2], splitName[3]];
+            const solutionCell = document.getElementById(`${'solution-overlay-' + row + '-' + col}`);
+            let solutionValue = solutionCell!.textContent;
+            if (inputCell.textContent != "" && inputCell.textContent != null) {
+                if (inputCell.textContent == solutionValue) {
+                    correctCount++
+                    // solutionCell!.style.backgroundColor = "#00FF00";
+                }
+                else {
+                    incorrectCount++;
+                    // solutionCell!.style.backgroundColor = "#FF0000";
+                }
+            }
+        });
+        console.log("Correct" + correctCount);
+        console.log("Inorrect" + incorrectCount);
+    }
 }
 
 document.onkeydown = function(event) {
