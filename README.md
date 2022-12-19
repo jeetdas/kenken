@@ -3,6 +3,10 @@
 The aim of this project is to randomly generate [KenKen](http://kenkenpuzzle.com) puzzles, with a difficulty metric to help find interesting ones.
 I am currently using it to provide KenKen puzzles for Caltech's newspaper.
 
+### Updates with this fork
+1. Web UI with improved functionality to play online [WIP]
+
+
 ## Running the code
 
 Run the following commands to compile the TypeScript code:
