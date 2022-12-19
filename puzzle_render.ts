@@ -1,8 +1,11 @@
-let focusedCellId: string | null = null;
-let validateCurrentGame: boolean = false;
+let focusedCellId: string | null = null; // Currently clicked on cell
+let validateCurrentGame: boolean = false; // Validate game if this true
+
+const CORRECT_COLOR = "#00FF00";
+const INCORRECT_COLOR = "#FF0000";
 
 function cellClick(event: Event) {
-    const target = event.target as Element;
+    let target = event.target as Element;
     let targetCell = target.id;
     
     if (targetCell && targetCell != null) {
@@ -13,7 +16,7 @@ function cellClick(event: Event) {
         }
 
         // store as focused cell
-        focusedCellId = target.id;
+        focusedCellId = targetCell;
         console.log(focusedCellId);
         target.classList.add('bg-yellow');
     }
@@ -31,6 +34,7 @@ function inputClick(event: Event) {
         }
     }
 
+    validateInput();
     event.stopPropagation();
 }
 
@@ -45,12 +49,17 @@ function showSolution(event: Event) {
     });
 }
 
-function validateInput(event: Event) {
-    let correctCount = 0;
-    let incorrectCount = 0;
+function flipValidate(event: Event) {
     const tar = event.target as HTMLInputElement;
     validateCurrentGame = tar.checked;
-    console.log('Validate: ' + tar.checked);
+    console.log('Validate: ' + validateCurrentGame);
+
+    validateInput();
+}
+
+function validateInput() {
+    let correctCount = 0;
+    let incorrectCount = 0;
     if (validateCurrentGame) {
         let inputCells = document.querySelectorAll('[id^="input-overlay-"]');
         inputCells.forEach(inputCell => {
@@ -58,19 +67,20 @@ function validateInput(event: Event) {
             let [row, col] = [splitName[2], splitName[3]];
             const solutionCell = document.getElementById(`${'solution-overlay-' + row + '-' + col}`);
             let solutionValue = solutionCell!.textContent;
+            const cell = document.getElementById(row + '-' + col)!;
             if (inputCell.textContent != "" && inputCell.textContent != null) {
                 if (inputCell.textContent == solutionValue) {
                     correctCount++
-                    // solutionCell!.style.backgroundColor = "#00FF00";
+                    cell.style.backgroundColor = CORRECT_COLOR;
                 }
                 else {
                     incorrectCount++;
-                    // solutionCell!.style.backgroundColor = "#FF0000";
+                    cell.style.backgroundColor = INCORRECT_COLOR;
                 }
             }
         });
         console.log("Correct" + correctCount);
-        console.log("Inorrect" + incorrectCount);
+        console.log("Incorrect" + incorrectCount);
     }
 }
 
@@ -83,4 +93,6 @@ document.onkeydown = function(event) {
             inputOverlay.textContent = event.key;
         }
     }
+
+    validateInput();
 }

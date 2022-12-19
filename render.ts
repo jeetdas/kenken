@@ -105,7 +105,7 @@ Promise.all([readPuzzle, readSolutions])
 		out.push('</style><script type="text/javascript" src="puzzle_render.js"></script></head>')
 		out.push('<body>')
 		out.push('Show solutions<input type=checkbox onClick="showSolution(event)">')
-		out.push('Validate input<input type=checkbox onClick="validateInput(event)">');
+		out.push('Validate input<input type=checkbox onClick="flipValidate(event)">');
 		out.push('<table>')
 		for (let r = 0; r < max; r++) {
 			out.push('<tr>')
