@@ -1,5 +1,6 @@
 let focusedCellId: string | null = null; // Currently clicked on cell
 let validateCurrentGame: boolean = false; // Validate game if this true
+let noteMode: boolean = false; // Note mode defaults to false
 
 const CORRECT_COLOR = "#00FF00";
 const INCORRECT_COLOR = "#FF0000";
@@ -57,6 +58,12 @@ function flipValidate(event: Event) {
     validateInput();
 }
 
+function flipNoteMode(event: Event) {
+    const tar = event.target as HTMLInputElement;
+    noteMode = tar.checked;
+    console.log('Note mode: ' + noteMode);
+}
+
 function validateInput() {
     let correctCount = 0;
     let incorrectCount = 0;
@@ -87,7 +94,18 @@ function validateInput() {
 document.onkeydown = function(event) {
     let isNum = !isNaN(parseInt(event.key));
 
-    if (focusedCellId && isNum) {
+    if (noteMode && isNum) {
+        let noteOverlay = document.getElementById("note-overlay-" + focusedCellId);
+        if (noteOverlay) {
+            let currentHints = noteOverlay.textContent != "" ? noteOverlay.textContent!.split(',') : [];
+            if (!currentHints.includes(event.key)) {
+                currentHints = currentHints.concat(event.key).sort();
+            } else {
+                currentHints = currentHints.filter(e => e!== event.key).sort();
+            }
+            noteOverlay.textContent = currentHints!.join(',');
+        }
+    } else if (focusedCellId && isNum) {
         let inputOverlay = document.getElementById("input-overlay-" + focusedCellId);
         if (inputOverlay) {
             inputOverlay.textContent = event.key;

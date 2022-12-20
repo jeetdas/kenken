@@ -63,8 +63,18 @@ const cellInputStyling = `
 .input-overlay {
     top: 37px;
     position: absolute;
-    right: 60px;
+	right: 60px;
     font-size: 60px;
+}
+`
+
+const noteInputStyling = `
+.note-overlay {
+    bottom: 2px;
+    position: absolute;
+    left: 6px;
+    font-size: 26px;
+	color: #0047AB;
 }
 `
 
@@ -94,18 +104,20 @@ Promise.all([readPuzzle, readSolutions])
 			'td.left{border-left:2px solid black}',
 			'td.right{border-right:2px solid black}',
 			'td.bottom{border-bottom:2px solid black}',
-			'span.op{position:absolute;top:0;font-size:12px}',
-			'.solution-span{display:none;position:absolute;top:10px;left:16px;font-size:28px}',
+			'span.op{position:absolute;top:0;font-size:32px}',
+			'.solution-span{display:none;position:absolute;top:5px;right:16px;font-size:28px}',
 			'.show-solution { display: block }',
 			'.bg-yellow { background-color: yellow }',
 			'#input-box { padding-top: 100px; }',
 			inputButtonStyling,
-			cellInputStyling
+			cellInputStyling,
+			noteInputStyling
 		)
 		out.push('</style><script type="text/javascript" src="puzzle_render.js"></script></head>')
 		out.push('<body>')
 		out.push('Show solutions<input type=checkbox onClick="showSolution(event)">')
 		out.push('Validate input<input type=checkbox onClick="flipValidate(event)">');
+		out.push('Note mode input<input type=checkbox onClick="flipNoteMode(event)">');
 		out.push('<table>')
 		for (let r = 0; r < max; r++) {
 			out.push('<tr>')
@@ -125,6 +137,7 @@ Promise.all([readPuzzle, readSolutions])
 				const op = boxOps.get(boxId)
 				if (op) out.push('<span class=op>', op, '</span>')
 				out.push(`<span id=${"solution-overlay-" + r + "-" + c} class="solution-span">`, String(solution[r * max + c]), '</span>')
+				out.push(`<span id=${"note-overlay-" + r + "-" + c} class="note-overlay">`, '</span>')
 				out.push(`<span id=${"input-overlay-" + r + "-" + c} class="input-overlay"></span>`)
 				out.push('</td>')
 			}
