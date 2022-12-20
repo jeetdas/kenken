@@ -148,8 +148,6 @@ Promise.all([readPuzzle, readSolutions])
 		)
 		out.push('</style><script type="text/javascript" src="puzzle_render.js"></script></head>')
 		out.push('<body>')
-		out.push('Show solutions<input type=checkbox onClick="showSolution(event)">')
-		out.push('Validate input<input type=checkbox onClick="flipValidate(event)">');
 		out.push('<table>')
 		for (let r = 0; r < max; r++) {
 			out.push('<tr>')
@@ -178,13 +176,17 @@ Promise.all([readPuzzle, readSolutions])
 		out.push('</table>');
 		out.push('<div class="input-box">');
 		out.push('<div class="game-toggles-box">');
-		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Undo</button>`)
-		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Erase</button>`)
-		out.push(`<button onClick='flipNoteMode()' class="game-toggle-button" id="flip-note-button" type="button">Notes</button>`)
-		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Hint</button>`)
+		out.push(`<button onClick='showSolution()' class="game-toggle-button" id="flip-solutions-button" type="button">Show solutions</button>`)
+		out.push(`<button onClick='flipValidate()' class="game-toggle-button" id="flip-validate-button" type="button">Validate</button>`)
+		out.push('</div>');
+		out.push('<div class="game-toggles-box">');
+		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Undo</button>`);
+		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Erase</button>`);
+		out.push(`<button onClick='flipNoteMode()' class="game-toggle-button" id="flip-note-button" type="button">Notes</button>`);
+		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Hint</button>`);
 		out.push('</div>');
 		for (let numInput = 0; numInput < max; ++numInput) {
-			out.push(`<button onClick='inputClick(event)' class="input-button" type="button" value="${numInput + 1}">${numInput + 1}</button>`)
+			out.push(`<button onClick='inputClick(event)' class="input-button" type="button" value="${numInput + 1}">${numInput + 1}</button>`);
 		}
 		out.push('</div>');
 		out.push('</body>')

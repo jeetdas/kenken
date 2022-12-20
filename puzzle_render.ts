@@ -1,6 +1,7 @@
 let focusedCellId: string | null = null; // Currently clicked on cell
 let validateCurrentGame: boolean = false; // Validate game if this true
 let noteMode: boolean = false; // Note mode defaults to false
+let showSolutions: boolean = false; // Shows the game solutions as an overlay
 
 const CORRECT_COLOR = "#00FF00";
 const INCORRECT_COLOR = "#FF0000";
@@ -55,21 +56,28 @@ function inputClick(event: Event) {
     event.stopPropagation();
 }
 
-function showSolution(event: Event) {
-    const checkBox = event.target as HTMLInputElement;
+function showSolution() {
+    showSolutions = !showSolutions;
     let solutionSpans = Array.from(document.getElementsByClassName('solution-span'));
     solutionSpans.forEach(element => {
-        if (checkBox.checked)
+        if (showSolutions) {
+            document.getElementById('flip-solutions-button')!.style.backgroundColor = BUTTON_HIGHLIGHT_COLOR;
             element.classList.add('show-solution');
-        else
+        }
+        else {
+            document.getElementById('flip-solutions-button')!.style.backgroundColor = BUTTON_BASE_COLOR;
             element.classList.remove('show-solution');
+        }
     });
 }
 
-function flipValidate(event: Event) {
-    const tar = event.target as HTMLInputElement;
-    validateCurrentGame = tar.checked;
-    console.log('Validate: ' + validateCurrentGame);
+function flipValidate() {
+    validateCurrentGame = !validateCurrentGame;
+
+    if (validateCurrentGame)
+        document.getElementById('flip-validate-button')!.style.backgroundColor = BUTTON_HIGHLIGHT_COLOR;
+    else
+        document.getElementById('flip-validate-button')!.style.backgroundColor = BUTTON_BASE_COLOR;
 
     validateInput();
 }
