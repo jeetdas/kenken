@@ -57,12 +57,36 @@ const inputButtonStyling = `
 }
 `
 
+const gameToggleButtonStyling = `
+.game-toggle-button {
+    background-color: rgba(51, 51, 51, 0.05);
+    border-radius: 20px;
+    border-width: 0;
+    color: #4646e1;
+    cursor: pointer;
+    display: inline-block;
+    font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 25px;
+    font-weight: 500;
+    line-height: 20px;
+    list-style: none;
+    margin: 0 15px 0 0;
+    padding: 1.3rem 2rem;
+    text-align: center;
+    transition: all 200ms;
+    vertical-align: baseline;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+`
+
 const cellInputStyling = `
 .input-overlay {
-    top: 37px;
-    position: absolute;
-	right: 60px;
     font-size: 60px;
+    display: block;
+    text-align: center;
 }
 `
 
@@ -73,6 +97,12 @@ const noteInputStyling = `
     left: 6px;
     font-size: 26px;
 	color: #0047AB;
+}
+`
+
+const gameToggleBoxStyling = `
+.game-toggles-box {
+	margin-bottom: 1rem;
 }
 `
 
@@ -109,16 +139,17 @@ Promise.all([readPuzzle, readSolutions])
 			'.solution-span{display:none;position:absolute;top:5px;right:16px;font-size:28px}',
 			'.show-solution { display: block }',
 			'.bg-yellow { background-color: yellow }',
-			'#input-box { padding-top: 100px; text-align: center; }',
+			'.input-box { padding-top: 100px; text-align: center; }',
 			inputButtonStyling,
 			cellInputStyling,
-			noteInputStyling
+			noteInputStyling,
+			gameToggleBoxStyling,
+			gameToggleButtonStyling
 		)
 		out.push('</style><script type="text/javascript" src="puzzle_render.js"></script></head>')
 		out.push('<body>')
 		out.push('Show solutions<input type=checkbox onClick="showSolution(event)">')
 		out.push('Validate input<input type=checkbox onClick="flipValidate(event)">');
-		out.push('Note mode<input type=checkbox onClick="flipNoteMode(event)">');
 		out.push('<table>')
 		for (let r = 0; r < max; r++) {
 			out.push('<tr>')
@@ -145,7 +176,13 @@ Promise.all([readPuzzle, readSolutions])
 			out.push('</tr>')
 		}
 		out.push('</table>');
-		out.push('<div id="input-box">');
+		out.push('<div class="input-box">');
+		out.push('<div class="game-toggles-box">');
+		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Undo</button>`)
+		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Erase</button>`)
+		out.push(`<button onClick='flipNoteMode()' class="game-toggle-button" id="flip-note-button" type="button">Notes</button>`)
+		out.push(`<button onClick='inputClick(event)' class="game-toggle-button" type="button">Hint</button>`)
+		out.push('</div>');
 		for (let numInput = 0; numInput < max; ++numInput) {
 			out.push(`<button onClick='inputClick(event)' class="input-button" type="button" value="${numInput + 1}">${numInput + 1}</button>`)
 		}

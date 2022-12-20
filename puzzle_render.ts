@@ -5,6 +5,9 @@ let noteMode: boolean = false; // Note mode defaults to false
 const CORRECT_COLOR = "#00FF00";
 const INCORRECT_COLOR = "#FF0000";
 
+const BUTTON_HIGHLIGHT_COLOR = "rgb(51 51 51 / 31%)";
+const BUTTON_BASE_COLOR = "rgba(51, 51, 51, 0.05)";
+
 function cellClick(event: Event) {
     let target = event.target as Element;
     let targetCell = target.id;
@@ -71,10 +74,12 @@ function flipValidate(event: Event) {
     validateInput();
 }
 
-function flipNoteMode(event: Event) {
-    const tar = event.target as HTMLInputElement;
-    noteMode = tar.checked;
-    console.log('Note mode: ' + noteMode);
+function flipNoteMode() {
+    noteMode = !noteMode;
+    if (noteMode)
+        document.getElementById('flip-note-button')!.style.backgroundColor = BUTTON_HIGHLIGHT_COLOR;
+    else
+        document.getElementById('flip-note-button')!.style.backgroundColor = BUTTON_BASE_COLOR;
 }
 
 function validateInput() {
