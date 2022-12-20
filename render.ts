@@ -41,12 +41,12 @@ const inputButtonStyling = `
     cursor: pointer;
     display: inline-block;
     font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 14px;
+    font-size: 25px;
     font-weight: 500;
     line-height: 20px;
     list-style: none;
-    margin: 0;
-    padding: 10px 12px;
+    margin: 0 15px 0 0;
+    padding: 2rem 2rem;
     text-align: center;
     transition: all 200ms;
     vertical-align: baseline;
@@ -54,8 +54,6 @@ const inputButtonStyling = `
     user-select: none;
     -webkit-user-select: none;
     touch-action: manipulation;
-    padding-right: 12px;
-    margin-right: 15px;
 }
 `
 
@@ -81,6 +79,9 @@ const noteInputStyling = `
 Promise.all([readPuzzle, readSolutions])
 	.then(([puzzle, solution]) => {
 		const { max, cages } = puzzle!
+		// We know which cell belongs to which cage here, color accordingly
+		console.log(JSON.stringify(cages));
+		const puzzleDisplaySizing = Math.floor(50/max); // Being used as rem
 		const boxCage = new Map<string, Cage>() //map of '1 2' to cage
 		const boxOps = new Map<string, string>() //map of '1 2' to cage operation to display
 		for (const cage of cages) {
@@ -98,8 +99,8 @@ Promise.all([readPuzzle, readSolutions])
 		const out: string[] = []
 		out.push('<head><style>')
 		out.push(
-			'table{position:relative;top:10px;border-collapse:collapse}',
-			'td{position:relative;width:150px;height:150px;border:1.5px dashed black;font-family:Arial,Helvetica,sans-serif}',
+			'table{position:relative;top:10px;border-collapse:collapse; margin-left: auto; margin-right: auto;}',
+			`td{position:relative;width:${puzzleDisplaySizing}rem;height:${puzzleDisplaySizing}rem;border:1.5px dashed black;font-family:Arial,Helvetica,sans-serif}`,
 			'td.top{border-top:2px solid black}',
 			'td.left{border-left:2px solid black}',
 			'td.right{border-right:2px solid black}',
@@ -108,7 +109,7 @@ Promise.all([readPuzzle, readSolutions])
 			'.solution-span{display:none;position:absolute;top:5px;right:16px;font-size:28px}',
 			'.show-solution { display: block }',
 			'.bg-yellow { background-color: yellow }',
-			'#input-box { padding-top: 100px; }',
+			'#input-box { padding-top: 100px; text-align: center; }',
 			inputButtonStyling,
 			cellInputStyling,
 			noteInputStyling
@@ -117,7 +118,7 @@ Promise.all([readPuzzle, readSolutions])
 		out.push('<body>')
 		out.push('Show solutions<input type=checkbox onClick="showSolution(event)">')
 		out.push('Validate input<input type=checkbox onClick="flipValidate(event)">');
-		out.push('Note mode input<input type=checkbox onClick="flipNoteMode(event)">');
+		out.push('Note mode<input type=checkbox onClick="flipNoteMode(event)">');
 		out.push('<table>')
 		for (let r = 0; r < max; r++) {
 			out.push('<tr>')
@@ -145,7 +146,7 @@ Promise.all([readPuzzle, readSolutions])
 		}
 		out.push('</table>');
 		out.push('<div id="input-box">');
-		for (let numInput = 0; numInput < 10; ++numInput) {
+		for (let numInput = 0; numInput < max; ++numInput) {
 			out.push(`<button onClick='inputClick(event)' class="input-button" type="button" value="${numInput + 1}">${numInput + 1}</button>`)
 		}
 		out.push('</div>');

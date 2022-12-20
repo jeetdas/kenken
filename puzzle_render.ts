@@ -29,9 +29,22 @@ function inputClick(event: Event) {
     const target = event.target as HTMLInputElement;
     console.log(target.value);
     if (focusedCellId) {
-        let inputOverlay = document.getElementById("input-overlay-" + focusedCellId);
-        if (inputOverlay) {
-            inputOverlay.textContent = target.value;
+        if (noteMode) {
+            let noteOverlay = document.getElementById("note-overlay-" + focusedCellId);
+            if (noteOverlay) {
+                let currentHints = noteOverlay.textContent != "" ? noteOverlay.textContent!.split(',') : [];
+                if (!currentHints.includes(target.value)) {
+                    currentHints = currentHints.concat(target.value).sort();
+                } else {
+                    currentHints = currentHints.filter(e => e!== target.value).sort();
+                }
+                noteOverlay.textContent = currentHints!.join(',');
+            }
+        } else {
+            let inputOverlay = document.getElementById("input-overlay-" + focusedCellId);
+            if (inputOverlay) {
+                inputOverlay.textContent = target.value;
+            }
         }
     }
 
